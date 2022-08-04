@@ -13,16 +13,33 @@ api = tweepy.API(auth)
 
 
 def post_on_twitter(title, body, source):
+    """
+    :param title: Title for the post
+    :param body: Url of the post
+    :param source: credits for the source
+    :return: None
+    """
     api.update_status(f"{title}\nSource: {source}\n{body}")
     return
 
 
 def get_today_news(language='en', category='business', country='in'):
+    """
+    :param language: language of news
+    :param category: category of news
+    :param country: news based on country
+    :return:
+    """
     top_headlines = newsap.get_top_headlines(language=language, category=category, country=country)
     return top_headlines
 
 
 def get_news_with_category():
+    """
+    get the news category and update them in a list
+    :return: news dict
+    """
+
     news = {}
     for category in categories.keys():
         try:
