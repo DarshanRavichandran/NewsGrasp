@@ -3,12 +3,13 @@ from config import *
 import tweepy
 from constants import *
 import time
+import os
 
-newsap = NewsApiClient(api_key=api_key)
+newsap = NewsApiClient(api_key=os.environ["NEWS_API_KEY"])
 
-auth = tweepy.OAuthHandler(consumer_key=twitter_consumer_key,
-                           consumer_secret=twitter_consumer_secret_key)
-auth.set_access_token(twitter_access_token, twitter_access_secret)
+auth = tweepy.OAuthHandler(consumer_key=os.environ["TWITTER_CONSUMER_KEY"],
+                           consumer_secret=os.environ["TWITTER_CONSUMER_SECRET_KEY"])
+auth.set_access_token(os.environ["TWITTER_ACCESS_TOKEN"], os.environ["TWITTER_ACCESS_SECRET"])
 api = tweepy.API(auth)
 
 

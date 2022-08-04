@@ -1,7 +1,0 @@
-api_key = ""
-twitter_consumer_key = ""
-twitter_consumer_secret_key= ""
-twitter_access_token= ""
-twitter_access_secret= ""
-client_id= ""
-client_secret= ""
