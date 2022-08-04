@@ -54,7 +54,7 @@ if __name__ == "__main__":
     news_headlines = get_news_with_category()
     print (news_headlines)
     for category in news_headlines.keys():
-        news_count = 1
+        news_count = categories[category]
         count = 1
         for content in news_headlines[category]["articles"]:
             if news_count >= count:
