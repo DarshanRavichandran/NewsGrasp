@@ -75,7 +75,8 @@ def task():
                 break
 
 
-schedule.every().day.at("16:40").do(task)
+schedule.every().day.at("08:00").do(task)
+schedule.every().day.at("18:00").do(task)
 
 while True:
     schedule.run_pending()
