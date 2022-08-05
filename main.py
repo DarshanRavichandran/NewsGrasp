@@ -1,7 +1,7 @@
 from newsapi import NewsApiClient
-from config import *
 import tweepy
 from constants import *
+import schedule
 import time
 import os
 
@@ -51,9 +51,14 @@ def get_news_with_category():
     return news
 
 
-if __name__ == "__main__":
+def task():
+    """
+    Executes the News api and Twitter
+    :return: None
+    """
+
     news_headlines = get_news_with_category()
-    print (news_headlines)
+    print(news_headlines)
     for category in news_headlines.keys():
         news_count = categories[category]
         count = 1
@@ -61,10 +66,17 @@ if __name__ == "__main__":
             if news_count >= count:
                 try:
                     post_on_twitter(content["title"], content['url'], content["source"]["name"])
-                    print (f"successful post from category:{category}")
+                    print(f"successful post from category:{category}")
                     time.sleep(300)
                     count += 1
                 except Exception as e:
                     print(f"unable to post the news from - {category}, error msg: {str(e)}")
             else:
                 break
+
+
+schedule.every().day.at("16:40").do(task)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
