@@ -12,14 +12,14 @@ auth.set_access_token(os.environ["TWITTER_ACCESS_TOKEN"], os.environ["TWITTER_AC
 api = tweepy.API(auth)
 
 
-def post_on_twitter(title, body, source):
+def post_on_twitter(title, body, source, tags):
     """
     :param title: Title for the post
     :param body: Url of the post
     :param source: credits for the source
     :return: None
     """
-    api.update_status(f"{title}\nSource: {source}\n{body}")
+    api.update_status(f"{title}\nSource: {source}\n{tags}\n{body}")
     return
 
 
