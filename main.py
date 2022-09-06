@@ -63,8 +63,6 @@ def get_arranged_news_list(categories_of_news):
         cat_len[category]["current_index"] = 0
         cat_len[category]["last_index"] = len(categories_of_news[category]['articles']) - 1
         total_news_count += len(categories_of_news[category]['articles'])
-    print(cat_len)
-    print(total_news_count)
     final_news_list = []
     current_news_count = 0
     while total_news_count > current_news_count:
@@ -77,7 +75,6 @@ def get_arranged_news_list(categories_of_news):
                 final_news_list.append(categories_of_news[category]['articles'][index])
                 cat_len[category]["current_index"] = cat_len[category]["current_index"] + 1
                 current_news_count += 1
-    print(final_news_list)
     return final_news_list
 
 
@@ -89,7 +86,6 @@ def task():
 
     news_headlines = get_news_with_category()
     news_list = get_arranged_news_list(news_headlines)
-    print(news_headlines)
     for content in news_list:
         try:
             tags = f"#LatestNews #{content['category'].title()} #today #NewsGrasp"
