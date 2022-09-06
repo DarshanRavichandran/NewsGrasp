@@ -1,7 +1,6 @@
 from newsapi import NewsApiClient
 import tweepy
 from constants import *
-import schedule
 import time
 import os
 
@@ -51,33 +50,56 @@ def get_news_with_category():
     return news
 
 
+def get_arranged_news_list(categories_of_news):
+    """
+
+    :param categories_of_news: raw data of news
+    :return: return processed list for news
+    """
+    cat_len = {}
+    total_news_count = 0
+    for category in categories_of_news.keys():
+        cat_len[category] = {}
+        cat_len[category]["current_index"] = 0
+        cat_len[category]["last_index"] = len(categories_of_news[category]['articles']) - 1
+        total_news_count += len(categories_of_news[category]['articles'])
+    print(cat_len)
+    print(total_news_count)
+    final_news_list = []
+    current_news_count = 0
+    while total_news_count > current_news_count:
+        for category in categories_of_news.keys():
+            if cat_len[category]["current_index"] <= cat_len[category]["last_index"]:
+                index = cat_len[category]["current_index"]
+                # add category in article
+                categories_of_news[category]['articles'][index]['category'] = category
+                # append article details in final list
+                final_news_list.append(categories_of_news[category]['articles'][index])
+                cat_len[category]["current_index"] = cat_len[category]["current_index"] + 1
+                current_news_count += 1
+    print(final_news_list)
+    return final_news_list
+
+
 def task():
     """
-    Executes the News api and Twitter
+    Executes News api and Tweets
     :return: None
     """
 
     news_headlines = get_news_with_category()
+    news_list = get_arranged_news_list(news_headlines)
     print(news_headlines)
-    for category in news_headlines.keys():
-        news_count = categories[category]
-        count = 1
-        for content in news_headlines[category]["articles"]:
-            if news_count >= count:
-                try:
-                    post_on_twitter(content["title"], content['url'], content["source"]["name"])
-                    print(f"successful post from category:{category}")
-                    time.sleep(300)
-                    count += 1
-                except Exception as e:
-                    print(f"unable to post the news from - {category}, error msg: {str(e)}")
-            else:
-                break
+    for content in news_list:
+        try:
+            tags = f"#LatestNews #{content['category'].title()} #today #NewsGrasp"
+            post_on_twitter(content["title"], content['url'], content["source"]["name"], tags)
+            print(f"successful post from category:{content['category']}")
+            time.sleep(300)
+        except Exception as e:
+            print(f"unable to post the news from - {content['category']}, error msg: {str(e)}")
 
-
-schedule.every().day.at("08:00").do(task)
-schedule.every().day.at("18:00").do(task)
 
 while True:
-    schedule.run_pending()
-    time.sleep(1)
+    task()
+    time.sleep(3600)
